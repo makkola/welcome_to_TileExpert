@@ -4,12 +4,12 @@ import { useState } from 'react';
 import useSWR from 'swr';
 
 import styles from './page.module.css';
-
 import { fetchOnePost } from '@/libs/fetchOnePost';
 
+const fetcher = () => fetchOnePost();
+
 const ComponentOne = () => {
-    const { data } = useSWR('custom_key_1', fetchOnePost);
-    //...some logic
+    const { data } = useSWR('post', fetcher);
 
     return data ? (
         <div className={styles.card}>
@@ -23,9 +23,7 @@ const ComponentOne = () => {
 };
 
 const ComponentTwo = () => {
-    const { data } = useSWR('custom_key_2', () => fetchOnePost({ delayMS: 2000 }));
-    //...some logic
-
+    const { data } = useSWR('post', fetcher);
     return data ? (
         <div className={styles.card}>
             <h2>{data.title}</h2>
