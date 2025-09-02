@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, memo, PureComponent } from 'react';
 
 type IUser = {
     name: string
@@ -10,38 +10,45 @@ type IProps = {
 }
 
 // functional component
-const FirstComponent = ({ name, age }: IUser) => (
+const FirstComponent = memo(({ name, age }: IUser) => (
     <div>
         my name is {name}, my age is {age}
     </div>
-);
+));
 
 // functional component
 // Этот компонент является необязательным для выполнения задания, но продемонстрирует глубину знаний в React.
-const SecondComponent = ({ user: { name, age } }: IProps) => (
+const SecondComponent = memo(({ user: { name, age } }: IProps) => (
     <div>
         my name is {name}, my age is {age}
     </div>
-);
+));
 
 // class component
 class ThirdComponent extends Component<IUser> {
+    shouldComponentUpdate(nextProps:IUser) {
+        return (
+          nextProps.name !== this.props.name || nextProps.age !== this.props.age  
+        );
+    }
     render() {
         return (
             <div>
                 my name is {this.props.name}, my age is {this.props.age}
             </div>
-        )
+        );
     }
 }
 
 // class component
-class FourthComponent extends Component<IProps> {
+class FourthComponent extends PureComponent<IProps> {
     render() {
         return (
             <div>
                 my name is {this.props.user.name}, my age is {this.props.user.age}
             </div>
-        )
+        );
     }
 }
+
+
